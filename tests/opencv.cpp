@@ -17,13 +17,23 @@
 #include "opencv2/core.hpp"
 #include "opencv2/imgproc.hpp"
 #include "opencv2/highgui.hpp"
+#include "opencv2/videoio.hpp"
 
 /*
  * Simple C++ Test Suite
  */
 
+#define __CAPTURE_ERROR__ "capture could not be opened"
+#define __TEST_VIDEO_ADDRESS__ "/home/wolf/Videos/aula5.mp4"
+
 void test1() {
-    std::cout << "" << std::endl;
+    std::cout << "opencv test 1" << std::endl;
+    cv::VideoCapture capture;
+    if(capture.open(__TEST_VIDEO_ADDRESS__)) {
+      return;  
+    }else{
+        throw __CAPTURE_ERROR__;
+    }
     
 }
 
@@ -40,7 +50,7 @@ int main(int argc, char** argv) {
     test1();
     std::cout << "%TEST_FINISHED% time=0 test1 (opencv)" << std::endl;
 
-    std::cout << "%TEST_STARTED% test2 (opencv)\n" << std::endl;
+    std::cout << "%TEST_STARTED% test2 (opencv)" << std::endl;
     test2();
     std::cout << "%TEST_FINISHED% time=0 test2 (opencv)" << std::endl;
 
