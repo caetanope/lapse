@@ -18,44 +18,48 @@
 #include "opencv2/imgproc.hpp"
 #include "opencv2/highgui.hpp"
 #include "opencv2/videoio.hpp"
+#include <opencv2/highgui.hpp>
 
 /*
  * Simple C++ Test Suite
  */
 
 #define __CAPTURE_ERROR__ "capture could not be opened"
+#define __FRAME_ERROR__ "frame could not be retrieved"
 #define __TEST_VIDEO_ADDRESS__ "/home/wolf/Videos/aula5.mp4"
 
-void test1() {
+cv::VideoCapture test1() {
     std::cout << "opencv test 1" << std::endl;
     cv::VideoCapture capture;
     if(capture.open(__TEST_VIDEO_ADDRESS__)) {
-      return;  
+      std::cout << "success" << std::endl;
+      return capture;  
     }else{
-        throw __CAPTURE_ERROR__;
+        throw std::invalid_argument(__CAPTURE_ERROR__);
     }
     
 }
 
 void test2() {
     std::cout << "opencv test 2" << std::endl;
-    std::cout << "%TEST_FAILED% time=0 testname=test2 (opencv) message=error message sample" << std::endl;
+    cv::VideoCapture capture = test1();
+    cv::Mat frame;
+    capture.retrieve(frame, 0);
+    try{
+        cv::imshow("Image", frame);
+    }catch (...){
+        throw std::invalid_argument(__FRAME_ERROR__);
+    }
+    cv::waitKey(0);
+    
 }
 
 int main(int argc, char** argv) {
     std::cout << "%SUITE_STARTING% opencv" << std::endl;
-    std::cout << "%SUITE_STARTED%" << std::endl;
-
-    std::cout << "%TEST_STARTED% test1 (opencv)" << std::endl;
+    
     test1();
-    std::cout << "%TEST_FINISHED% time=0 test1 (opencv)" << std::endl;
-
-    std::cout << "%TEST_STARTED% test2 (opencv)" << std::endl;
     test2();
-    std::cout << "%TEST_FINISHED% time=0 test2 (opencv)" << std::endl;
-
-    std::cout << "%SUITE_FINISHED% time=0" << std::endl;
-
+    
     return (EXIT_SUCCESS);
 }
 

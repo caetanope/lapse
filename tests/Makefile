@@ -1,6 +1,6 @@
 CXX ?= g++ 
 CXXFLAGS += -lpthread -Wall -c $(shell pkg-config --cflags opencv) -std=c++14
-LDFLAGS += $(shell pkg-config --libs openssl x11 --static opencv)
+LDFLAGS += $(shell pkg-config --libs openssl --static opencv)
 
 all: opencv
 
